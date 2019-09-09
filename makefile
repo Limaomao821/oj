@@ -1,6 +1,6 @@
-sourceCode=UVA_11991.cpp
-objective.o: UVA_11991.cpp
-	g++ -g -o objective.o $(sourceCode) -std=c++11
+sourceCode=UOJ_Test0_Count_Inversion.cpp
+objective.o: $(sourceCode)
+	g++ -g -o objective.o $(sourceCode)
 	
 run:
 	./objective.o <input >output
