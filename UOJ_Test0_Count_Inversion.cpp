@@ -1,4 +1,4 @@
-#include <list>
+#include <deque>
 #include <cstdio>
 #include <vector>
 #include <algorithm>
@@ -10,7 +10,7 @@ int main(void)
     int num;
     scanf("%d", &num);
     vector<int> data;
-    list<int> record;
+    deque<int> record;
     int i=0;
     for(; i<num; ++i){
         int temp;
@@ -26,12 +26,16 @@ int main(void)
             record.push_back(temp);
         }else{
             int newValue = 3*temp;
-            list<int>::iterator pos1 = upper_bound(record.begin(), record.end(), newValue);
+            deque<int>::iterator pos1 = upper_bound(record.begin(), record.end(), newValue);
             if(pos1 != record.end()){
                 inverse_num += distance(pos1, record.end());
             }
-            list<int>::iterator pos2 = lower_bound(record.begin(), record.end(), temp);
-            record.insert(pos2, temp);
+            deque<int>::iterator pos2 = lower_bound(record.begin(), record.end(), temp);
+            if(pos2 != record.end()){
+                record.insert(pos2, temp);
+            }else{
+                record.push_back(temp);
+            }
         }
     }
     printf("%d", inverse_num);
