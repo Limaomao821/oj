@@ -1,3 +1,9 @@
+1 1 0 0 0 
+0 1 0 0 1 
+1 0 0 1 1 
+0 0 0 0 0 
+1 0 1 0 1
+
 // #include <cstdio>
 // #include <vector>
 // #include <algorithm>
