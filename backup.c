@@ -1,12 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct{
-    _Bool landscape;
-    _Bool tagged;
-}block;
-
 int main(void){
-    printf("%ld\n", sizeof(block));
-    printf("%ld\n", sizeof(int));
+    int m=1000, n=1000;
+    printf("%d %d\n", m, n);
+    int i=0, j=0;
+    for(i=0;i<m;++i){
+        for(j=0;j<n;++j){
+            printf("1 ");
+        }
+        printf("\n");
+    }
 }
