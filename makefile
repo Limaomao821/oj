@@ -1,4 +1,4 @@
-sourceCode=UOJ_Assignment1_8.c
+sourceCode=backup.c
 CC=gcc
 
 objective.o: $(sourceCode)
@@ -6,3 +6,6 @@ objective.o: $(sourceCode)
 	
 run:
 	./objective.o <input >output
+
+test:
+	./objective.o
