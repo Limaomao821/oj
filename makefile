@@ -1,4 +1,4 @@
-sourceCode=backup.c
+sourceCode=UOJ_Assignment1_8.c
 CC=gcc
 
 objective.o: $(sourceCode)
