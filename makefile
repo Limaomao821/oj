@@ -1,4 +1,4 @@
-sourceCode=POJ_1163.c
+sourceCode=UOJ_Assignment2_6.c
 CC=gcc
 STD=-std=c++11
 
