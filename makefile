@@ -1,4 +1,4 @@
-sourceCode=UOJ_Assignment2_6.c
+sourceCode=UOJ_Assignment2_7.c
 CC=gcc
 STD=-std=c++11
 

@@ -1,115 +1,52 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct{
     short disk;
     short memory;
-}resourceRecord;
+}require;
 
 int main(void){
-    short totalDisk=0;
-    short totalMemory=0;
-    short taskNum=0;
+    int disk_total=0;
+    int memory_total=0;
+    int task_num=0;
+    scanf("%d%d%d", &disk_total, &memory_total, &task_num);
 
-    scanf("%hd%hd%hd", &totalDisk, &totalMemory, &taskNum);
-    
-    int **resource;
-    resourceRecord **record;
-
-    resource = (int**)malloc(sizeof(int*)*(totalMemory+1));
-    record   = (resourceRecord**)malloc(sizeof(resourceRecord*)*(totalMemory+1));
-    int temp=0;
-    for(temp=0;temp<totalMemory+1;++temp){
-        resource[temp] = (int*)malloc(sizeof(int)*(totalDisk+1));
-        record[temp] = (resourceRecord*)malloc(sizeof(resourceRecord)*(totalDisk+1));
-        // memset(resource[temp], 0, sizeof(int)*(totalDisk+1));
-        // memset(record[temp], 0, sizeof(resourceRecord)*(totalDisk+1));
-    }
-
+    int** table = (int**)malloc(sizeof(int*)*(disk_total+1));
+    require** require_table = (require**)malloc(sizeof(require*)*(disk_total+1));
     int temp1=0, temp2=0;
-    for(temp1=0;temp1<totalMemory;++temp1){
-        for(temp2=0;temp2<totalDisk;++temp2){
-            resource[temp1][temp2]=0;
-            record[temp1][temp2].memory = 0;
-            record[temp1][temp2].disk = 0;
+    for(temp1=0;temp1<disk_total+1;++temp1){
+        table[temp1] = (int*)malloc(sizeof(int)*(memory_total+1));
+        require_table[temp1] = (require*)malloc(sizeof(require)*(memory_total+1));
+    }
+
+    for(temp1=0;temp1<disk_total+1;++temp1){
+        for(temp2=0;temp2<memory_total+1;++temp2){
+            table[temp1][temp2] = 0;
+            require_table[temp1][temp2].disk = 0;
+            require_table[temp1][temp2].memory = 0;
         }
     }
 
-    int* maximum = &resource[totalMemory][totalDisk];
-    for(temp=0;temp<taskNum;++temp){
-        int diskNeed=0;
-        int memoryNeed=0;
-        int userNum=0;
-        scanf("%d%d%d", &diskNeed, &memoryNeed, &userNum);
-        
-        if(diskNeed > totalDisk || memoryNeed > totalMemory){
-            continue;
-        }
+    int temp3=0;
+    for(temp3=0;temp3<task_num;++temp3){
+        short int d_need=0;
+        short int m_need=0;
+        int user_num=0;
+        scanf("%hd%hd%d", &d_need, &m_need, &user_num);
 
-        int temp1 = *maximum;
-        int temp2 = resource[totalMemory-memoryNeed][totalDisk-diskNeed] + userNum;
-
-        int x, y;
-        if(temp2>temp1){
-            x = record[totalMemory-memoryNeed][totalDisk-diskNeed].memory + memoryNeed;
-            y = record[totalMemory-memoryNeed][totalDisk-diskNeed].disk + diskNeed;
-            resource[x][y] = temp2;
-            record[x][y].memory = x;
-            record[x][y].disk = y;
-        }
-
-        if(userNum > resource[memoryNeed][diskNeed]){
-            int new_x = record[memoryNeed][diskNeed].memory + memoryNeed;
-            int new_y = record[memoryNeed][diskNeed].disk + diskNeed;
-            int new_userNum = resource[memoryNeed][diskNeed] + userNum;
-
-            resource[memoryNeed][diskNeed] = userNum;
-            record[memoryNeed][diskNeed].memory = memoryNeed;
-            record[memoryNeed][diskNeed].disk = diskNeed;
-
-            if(new_x <= totalMemory && new_y <= totalDisk){
-                resource[new_x][new_y] = new_userNum;
-                record[new_x][new_y].memory = new_x;
-                record[new_x][new_y].disk = new_y;
-            }
-        }
-
-        for(temp1=memoryNeed;temp1<=totalMemory;++temp1){
-            for(temp2=diskNeed;temp2<=totalDisk;++temp2){
-                if(resource[temp1][temp2] < resource[temp1-1][temp2]){
-                    int new_x = record[temp1][temp2].memory + record[temp1-1][temp2].memory;
-                    int new_y = record[temp1][temp2].disk + record[temp1-1][temp2].disk;
-                    int new_userNum = resource[temp1][temp2] + resource[temp1-1][temp2];
-
-                    resource[temp1][temp2] = resource[temp1-1][temp2];
-                    record[temp1][temp2] = record[temp1-1][temp2];
-
-                    if(new_x <= totalMemory && new_y <= totalDisk){
-                        resource[new_x][new_y] = new_userNum;
-                        record[new_x][new_y].memory = new_x;
-                        record[new_x][new_y].disk = new_y;
-                    }
-                }
-
-                if(resource[temp1][temp2] < resource[temp1][temp2-1]){
-                    int new_x = record[temp1][temp2].memory + record[temp1][temp2-1].memory;
-                    int new_y = record[temp1][temp2].disk + record[temp1][temp2-1].disk;
-                    int new_userNum = resource[temp1][temp2] + resource[temp1][temp2-1];
-
-                    resource[temp1][temp2] = resource[memoryNeed][diskNeed-1];
-                    record[temp1][temp2] = record[memoryNeed][diskNeed-1];
-
-                    if(new_x <= totalMemory && new_y <= totalDisk){
-                        resource[new_x][new_y] = new_userNum;
-                        record[new_x][new_y].memory = new_x;
-                        record[new_x][new_y].disk = new_y;
-                    }
-                }
+        int left_d = disk_total - d_need;
+        int left_m = memory_total - m_need;
+        for(temp1=left_d;temp1>=0;--temp1){
+            for(temp2=left_m;temp2>=0;--temp2){
+                int newValue = table[temp1][temp2] + user_num;
+                if(newValue > table[d_need+temp1][m_need+temp2]) table[d_need+temp1][m_need+temp2] = newValue;
             }
         }
     }
 
+    printf("%d", table[disk_total][memory_total]);
 
-    printf("%d", *maximum);
+    return 0;
 }
