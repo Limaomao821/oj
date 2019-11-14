@@ -1,4 +1,4 @@
-sourceCode=UOJ_Assignment2_7.c
+sourceCode=UVA_10405.c
 CC=gcc
 STD=-std=c++11
 
