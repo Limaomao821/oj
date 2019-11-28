@@ -1,5 +1,5 @@
-sourceCode=UVA_10405.c
-CC=gcc
+sourceCode=UOJ_Assignment3_6.cpp
+CC=g++
 STD=-std=c++11
 
 objective.o: $(sourceCode)
