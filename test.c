@@ -1,13 +1,20 @@
 #include <stdio.h>
 #include <math.h>
 
-int main(void){
-    long long int target = 600851475143;
-    int i=0;
-    int result=0;
-    for(i=1;i<780000;++i){
-        result = target / i;
-        if(i%10==0) printf("%d\n", i);
+void divPrime(long long int i, long long int num){
+    if(num != 1){
+        while(num % i != 0) i += 1;
     }
+
+    printf("%lld | %lld\n", num, i);
+    num /= i;
+    if(num == 1) return;
+    else return divPrime(2, num);
+}
+
+int main(void){
+    long long int target;
+    scanf("%lld", &target);
+    divPrime(2,target);
     return 0;
 }
